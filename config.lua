@@ -1,0 +1,549 @@
+--***************************************************************************--
+-- general
+--***************************************************************************--
+lvim.leader = "space"
+lvim.log.level = "warn"
+lvim.format_on_save = true
+
+--***************************************************************************--
+-- custom keys
+--***************************************************************************--
+lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+
+--***************************************************************************--
+-- disable diagnostics outputs with virtual_text
+--***************************************************************************--
+lvim.lsp.diagnostics.virtual_text = false
+
+--***************************************************************************--
+-- builtin plugins
+--***************************************************************************--
+lvim.builtin.alpha.active = true
+lvim.builtin.alpha.mode = "dashboard"
+lvim.builtin.notify.active = true
+lvim.builtin.terminal.active = true
+lvim.builtin.nvimtree.setup.view.side = "left"
+lvim.builtin.nvimtree.show_icons.git = 0
+-- debugger adapter
+lvim.builtin.dap.active = true
+
+-- for rainbow brackets
+-- NOTE: colors don't have any effect because when using colorscheme with builtin integration of ts-rainbow
+lvim.builtin.treesitter.rainbow = {
+  enable = true,
+  extended_mode = true,
+  max_file_lines = nil,
+  colors = {
+    "#8be9fd",
+    "#50fa7b",
+    "#ffb86c",
+    "#ff79c6",
+    "#bd93f9",
+    "#ff5555",
+    "#f1fa8c",
+  },
+}
+
+lvim.builtin.treesitter.ensure_installed = {
+  "bash",
+  "c",
+  "javascript",
+  "json",
+  "lua",
+  "python",
+  "typescript",
+  "tsx",
+  "css",
+  "rust",
+  "java",
+  "yaml",
+  "markdown",
+}
+
+lvim.builtin.treesitter.ignore_install = { "haskell" }
+lvim.builtin.treesitter.highlight.enabled = true
+
+local _, actions = pcall(require, "telescope.actions")
+lvim.builtin.telescope.defaults.mappings = {
+  -- for input mode
+  i = {
+    ["<C-j>"] = actions.move_selection_next,
+    ["<C-k>"] = actions.move_selection_previous,
+    ["<C-n>"] = actions.cycle_history_next,
+    ["<C-p>"] = actions.cycle_history_prev,
+  },
+  -- for normal mode
+  n = {
+    ["<C-j>"] = actions.move_selection_next,
+    ["<C-k>"] = actions.move_selection_previous,
+  },
+}
+
+--***************************************************************************--
+-- null-ls
+--***************************************************************************--
+
+--***************************************************************************--
+-- formatters setup (not lazyloaded)
+--***************************************************************************--
+local formatters = require("lvim.lsp.null-ls.formatters")
+formatters.setup({
+  { command = "stylua", filetypes = { "lua" } },
+  { command = "rustfmt", filetypes = { "rust" } },
+  {
+    command = "prettier",
+    filetypes = {
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "json",
+      "html",
+      "markdown",
+      "yaml",
+    },
+  },
+})
+
+--***************************************************************************--
+-- linters setup
+--***************************************************************************--
+local linters = require("lvim.lsp.null-ls.linters")
+linters.setup({
+  { command = "eslint_d", filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" } },
+  -- TODO: move to after/ftplugin
+  { command = "yamllint", filetypes = { "yaml" } },
+})
+
+--***************************************************************************--
+-- custom whichkey mappings
+--***************************************************************************--
+
+-- TroubleToggle
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Trouble",
+  t = { "<cmd>TroubleToggle<cr>", "TroubleToggle" },
+  r = { "<cmd>Trouble lsp_references<cr>", "References" },
+  f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
+  d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
+  q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
+  l = { "<cmd>Trouble loclist<cr>", "LocationList" },
+  w = { "<cmd>Trouble workspace_diagnostics<cr>", "Diagnostics" },
+}
+
+-- Telescope projects
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+
+-- Hop
+lvim.builtin.which_key.mappings["n"] = {
+  name = "Hop",
+  w = { "<cmd>HopWord<cr>", "word" },
+  l = { "<cmd>HopLine<cr>", "line" },
+  p = { "<cmd>HopPattern<cr>", "pattern" },
+}
+
+-- Session (persistence)
+lvim.builtin.which_key.mappings["S"] = {
+  name = "Session",
+  c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
+  l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
+  Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
+}
+
+-- Spectre
+lvim.builtin.which_key.mappings["U"] = {
+  name = "Spectre",
+  o = { "<cmd>lua require('spectre').open()<cr>", "Open Spectre" },
+  -- TODO: need more keybinds
+}
+
+-- Goto preview
+lvim.builtin.which_key.mappings["m"] = {
+  name = "Goto preview",
+  d = { "<cmd>lua require('goto-preview').goto_preview_definition()<cr>", "Go to preview definition" },
+  i = { "<cmd>lua require('goto-preview').goto_preview_implementation()<cr>", "Go to preview implementation" },
+  q = { "<cmd>lua require('goto-preview').close_all_win()<cr>", "Close all preview" },
+  r = { "<cmd>lua require('goto-preview').goto_preview_references()<cr>", "Go to preview references" },
+}
+
+--***************************************************************************--
+-- skipped lsp servers for manual configuration
+--===========================================================================--
+--  - rust_analyzer (configured with rust-tools.nvim)
+--  - gopls (after/ftplugin/go.lua)
+--***************************************************************************--
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer", "gopls" })
+
+--***************************************************************************--
+-- Additional Plugins
+--***************************************************************************--
+lvim.plugins = {
+  { "lunarvim/colorschemes" },
+  { "p00f/nvim-ts-rainbow" },
+  { "christianchiarulli/nvcode-color-schemes.vim" },
+  { "folke/tokyonight.nvim" },
+  { "yashguptaz/calvera-dark.nvim" },
+  { "EdenEast/nightfox.nvim" },
+  {
+    "catppuccin/nvim",
+    as = "catppuccin",
+  },
+  {
+    "nvim-treesitter/playground",
+    event = "BufRead",
+  },
+  { "rebelot/kanagawa.nvim" },
+  {
+    "windwp/nvim-ts-autotag",
+    event = "InsertEnter",
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+  },
+  {
+    "folke/trouble.nvim",
+    config = function()
+      require("trouble").setup()
+    end,
+  },
+  {
+    "simrat39/rust-tools.nvim",
+    config = function()
+      local lsp_installer_servers = require("nvim-lsp-installer.servers")
+      local _, requested_server = lsp_installer_servers.get_server("rust_analyzer")
+      require("rust-tools").setup({
+        tools = {
+          autoSetHints = true,
+          hover_with_actions = true,
+          inlay_hints = {
+            show_parameter_hints = true,
+          },
+          runnables = {
+            use_telescope = true,
+          },
+        },
+        server = {
+          cmd_env = requested_server._default_options.cmd_env,
+          on_attach = require("lvim.lsp").common_on_attach,
+          on_init = require("lvim.lsp").common_on_init,
+        },
+      })
+    end,
+    ft = { "rust", "rs" },
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufRead",
+    setup = function()
+      vim.g.indentLine_enabled = 1
+      vim.g.indent_blankline_char = "▏"
+      vim.g.indent_blankline_filetype_exclude = { "help", "terminal", "dashboard" }
+      vim.g.indent_blankline_buftype_exclude = { "terminal" }
+      vim.g.indent_blankline_show_trailing_blankline_indent = false
+      vim.g.indent_blankline_show_first_indent_level = false
+    end,
+  },
+  {
+    "karb94/neoscroll.nvim",
+    event = "WinScrolled",
+    config = function()
+      require("neoscroll").setup({
+        -- All these keys will be mapped to their corresponding default scrolling animation
+        mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-y>", "<C-e>", "zt", "zz", "zb" },
+        hide_cursor = true, -- Hide cursor while scrolling
+        stop_eof = true, -- Stop at <EOF> when scrolling downwards
+        use_local_scrolloff = false, -- Use the local scope of scrolloff instead of the global scope
+        respect_scrolloff = false, -- Stop scrolling when the cursor reaches the scrolloff margin of the file
+        cursor_scrolls_alone = true, -- The cursor will keep on scrolling even if the window cannot scroll further
+        easing_function = "sine",
+        pre_hook = nil, -- Function to run before the scrolling animation starts
+        post_hook = nil, -- Function to run after the scrolling animation ends
+      })
+    end,
+  },
+  {
+    "folke/todo-comments.nvim",
+    event = "BufRead",
+    config = function()
+      require("todo-comments").setup()
+    end,
+  },
+  {
+    "f-person/git-blame.nvim",
+    event = "BufRead",
+    config = function()
+      vim.cmd("highlight default link gitblame SpecialComment")
+      vim.g.gitblame_enabled = 0
+    end,
+  },
+  {
+    "nacro90/numb.nvim",
+    event = "BufRead",
+    config = function()
+      require("numb").setup({
+        show_numbers = true, -- Enable 'number' for the window while peeking
+        show_cursorline = true, -- Enable 'cursorline' for the window while peeking
+      })
+    end,
+  },
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre", -- this will only start session saving when an actual file was opened
+    module = "persistence",
+    config = function()
+      require("persistence").setup({
+        dir = vim.fn.expand(vim.fn.stdpath("config") .. "/session/"),
+        options = { "buffers", "curdir", "tabpages", "winsize" },
+      })
+    end,
+  },
+  {
+    "windwp/nvim-spectre",
+    event = "BufRead",
+    config = function()
+      require("spectre").setup()
+    end,
+  },
+  {
+    "sindrets/diffview.nvim",
+    event = "BufRead",
+  },
+  {
+    "phaazon/hop.nvim",
+    event = "BufRead",
+    config = function()
+      require("hop").setup()
+    end,
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    run = "cd app && npm install",
+    ft = "markdown",
+    config = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+      vim.g.mkdp_auto_start = 1
+    end,
+  },
+  {
+    "npxbr/glow.nvim",
+    ft = { "markdown" },
+  },
+  {
+    "tpope/vim-surround",
+    keys = { "c", "d", "y" },
+  },
+  {
+    "leoluz/nvim-dap-go",
+  },
+  { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } },
+  {
+    "rmagatti/goto-preview",
+    config = function()
+      require("goto-preview").setup({
+        width = 80, -- Width of the floating window
+        height = 15, -- Height of the floating window
+        default_mappings = false, -- Bind default mappings
+        debug = false, -- Print debug information
+        opacity = 5, -- 0-100 opacity level of the floating window where 100 is fully transparent.
+        post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
+        focus_on_open = true,
+        dismiss_on_move = false,
+      })
+    end,
+  },
+  {
+    "kevinhwang91/nvim-bqf",
+    event = { "BufRead", "BufNew" },
+    config = function()
+      require("bqf").setup({
+        auto_enable = true,
+        preview = {
+          win_height = 12,
+          win_vheight = 12,
+          delay_syntax = 80,
+          border_chars = { "┃", "┃", "━", "━", "┏", "┓", "┗", "┛", "█" },
+        },
+        func_map = {
+          vsplit = "",
+          ptogglemode = "z,",
+          stoggleup = "",
+        },
+        filter = {
+          fzf = {
+            action_for = { ["ctrl-s"] = "split" },
+            extra_opts = { "--bind", "ctrl-o:toggle-all", "--prompt", "> " },
+          },
+        },
+      })
+    end,
+  },
+}
+
+--***************************************************************************--
+-- # COLORSCHEME CONFIG
+--***************************************************************************--
+local catppuccin = require("catppuccin")
+catppuccin.setup({
+  transparent_background = false,
+  term_colors = false,
+  styles = {
+    comments = "italic",
+    functions = "italic",
+    keywords = "NONE",
+    strings = "NONE",
+    variables = "NONE",
+  },
+  integrations = {
+    treesitter = true,
+    native_lsp = {
+      enabled = true,
+      virtual_text = {
+        errors = "italic",
+        hints = "italic",
+        warnings = "italic",
+        information = "italic",
+      },
+      underlines = {
+        errors = "undercurl",
+        hints = "undercurl",
+        warnings = "undercurl",
+        information = "underline",
+      },
+    },
+    lsp_trouble = true,
+    cmp = true,
+    lsp_saga = false,
+    gitgutter = false,
+    gitsigns = true,
+    telescope = true,
+    nvimtree = {
+      enabled = true,
+      show_root = false,
+      transparent_panel = true,
+    },
+    neotree = {
+      enabled = false,
+      show_root = false,
+      transparent_panel = false,
+    },
+    which_key = true,
+    indent_blankline = {
+      enabled = true,
+      colored_indent_levels = false,
+    },
+    dashboard = true,
+    neogit = false,
+    vim_sneak = false,
+    fern = false,
+    barbar = true,
+    bufferline = true,
+    markdown = true,
+    lightspeed = false,
+    ts_rainbow = true,
+    hop = true,
+    notify = true,
+    telekasten = true,
+    symbols_outline = true,
+  },
+})
+
+--***************************************************************************--
+-- # overrides for hl groups
+--***************************************************************************--
+local colors = require("catppuccin.api.colors").get_colors()
+
+catppuccin.remap({
+  -- general
+  TSKeywordFunction = { fg = colors.maroon, style = "bold,italic" },
+  TSFloat = { fg = colors.peach, style = "bold" }, -- For floats.
+  TSNumber = { fg = colors.peach, style = "bold" }, -- For all numbers
+  TSBoolean = { fg = colors.flamingo, style = "bold,italic" }, -- For booleans.
+  -- typescript
+  typescriptTSType = { fg = colors.yellow },
+  typescriptTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
+  typescriptTSParameter = { fg = colors.white, style = "italic" },
+  typescriptInterfaceName = { fg = colors.yellow },
+  typescriptTSNumber = { fg = colors.peach },
+
+  -- go
+  goTSProperty = { fg = colors.lavender },
+  goTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
+  goTSMethod = { fg = colors.blue },
+  goTSParameter = { fg = colors.white, style = "italic" },
+  goTSNumber = { fg = colors.peach },
+  goTSType = { fg = colors.teal },
+  goTSNamespace = { fg = colors.white, style = "bold" },
+  goTSKeyword = { fg = colors.red },
+  goTSKeywordFunction = { fg = colors.maroon, style = "italic,bold" },
+  -- jsx/tsx
+  tsxTSProperty = { fg = colors.lavender, style = "italic" },
+  tsxTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
+  tsxTSParameter = { fg = colors.white, style = "italic" },
+  tsxTSConstructor = { fg = colors.flamingo, style = "bold" },
+  tsxTSTagAttribute = { fg = colors.lavender },
+  tsxTSNumber = { fg = colors.peach },
+
+  -- dockerfile
+  dockerfileKeyword = { fg = colors.maroon, style = "bold" },
+})
+
+--***************************************************************************--
+lvim.colorscheme = "catppuccin"
+--***************************************************************************--
+
+--***************************************************************************--
+-- statusline configuration
+--***************************************************************************--
+local is_readonly = {
+  function()
+    if not vim.bo.readonly or not vim.bo.modifiable then
+      return ""
+    end
+    return " "
+  end,
+  color = { fg = colors.red },
+}
+
+local components = require("lvim.core.lualine.components")
+local gps = require("nvim-gps")
+
+lvim.builtin.lualine.inactive_sections = {
+  lualine_a = {},
+  lualine_b = {},
+  lualine_c = {},
+  lualine_x = {},
+  lualine_y = {},
+  lualine_z = {},
+}
+
+lvim.builtin.lualine.sections = {
+  lualine_a = { "mode" },
+  lualine_b = {},
+  lualine_c = {
+    { gps.get_location, cond = gps.is_avaliable, left_padding = 2, color = { fg = colors.teal } },
+  },
+  lualine_x = {
+    {
+      "branch",
+      icon = { "", color = { fg = colors.teal } },
+      padding = 0,
+    },
+    { "diff", separator = "", padding = 1 },
+    { "diagnostics", separator = "" },
+    { "filetype", separator = "" },
+    { "filename", color = { fg = colors.lavender, gui = "bold" }, separator = "" },
+    is_readonly,
+    components.encoding,
+  },
+  lualine_y = {},
+  lualine_z = { components.scrollbar },
+}
+--***************************************************************************--
+-- ##
+--***************************************************************************--
