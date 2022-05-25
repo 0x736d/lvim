@@ -116,8 +116,7 @@ formatters.setup({
 local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
 	{ command = "eslint_d", filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" } },
-	-- TODO: move to after/ftplugin
-	{ command = "yamllint", filetypes = { "yaml" } },
+	{ command = "luacheck", filetypes = { "lua" } },
 })
 
 --***************************************************************************--
@@ -177,7 +176,7 @@ lvim.builtin.which_key.mappings["m"] = {
 --  - rust_analyzer (configured with rust-tools.nvim)
 --  - gopls (after/ftplugin/go.lua)
 --***************************************************************************--
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer", "gopls" })
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyzer", "gopls", "yamlls" })
 
 --***************************************************************************--
 -- Additional Plugins
@@ -402,7 +401,7 @@ lvim.plugins = {
 --***************************************************************************--
 local catppuccin = require("catppuccin")
 catppuccin.setup({
-	transparent_background = false,
+	transparent_background = true,
 	term_colors = false,
 	styles = {
 		comments = "italic",
