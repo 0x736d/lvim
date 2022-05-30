@@ -170,6 +170,15 @@ lvim.builtin.which_key.mappings["m"] = {
 	r = { "<cmd>lua require('goto-preview').goto_preview_references()<cr>", "Go to preview references" },
 }
 
+lvim.builtin.which_key.mappings["i"] = {
+	name = "gh issue",
+	c = { "<cmd>Octo issue close<cr>", "Close issue" },
+	r = { "<cmd>Octo issue reopen<cr>", "Reopen issue" },
+	o = { "<cmd>Octo issue create<cr>", "Create issue" },
+	l = { "<cmd>Octo issue list<cr>", "List issues" },
+	u = { "<cmd>Octo issue url<cr>", "Copy URL of the issue" },
+}
+
 --***************************************************************************--
 -- skipped lsp servers for manual configuration
 --===========================================================================--
@@ -394,8 +403,28 @@ lvim.plugins = {
 			})
 		end,
 	},
+	{
+		"pwntester/octo.nvim",
+		event = "BufRead",
+		config = function()
+			require("octo").setup({
+				default_remote = { "upstream", "origin" }, -- order to try remotes
+				reaction_viewer_hint_icon = "", -- marker for user reactions
+				user_icon = " ", -- user icon
+				timeline_marker = "", -- timeline marker
+				timeline_indent = "2", -- timeline indentation
+				right_bubble_delimiter = "", -- Bubble delimiter
+				left_bubble_delimiter = "", -- Bubble delimiter
+				github_hostname = "", -- GitHub Enterprise host
+				snippet_context_lines = 4, -- number or lines around commented lines
+				file_panel = {
+					size = 10, -- changed files panel rows
+					use_icons = true, -- use web-devicons in file panel
+				},
+			})
+		end,
+	},
 }
-
 --***************************************************************************--
 -- # COLORSCHEME CONFIG
 --***************************************************************************--
