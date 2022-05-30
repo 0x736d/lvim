@@ -421,6 +421,28 @@ lvim.plugins = {
 					size = 10, -- changed files panel rows
 					use_icons = true, -- use web-devicons in file panel
 				},
+				mappings = {
+					issue = {
+						reload = "<C-r>", -- reload issue
+						open_in_browser = "<C-b>", -- open issue in browser
+						copy_url = "<C-y>",
+						create_label = "<space>lc", -- create label
+						add_label = "<space>la", -- add label
+						remove_label = "<space>ld", -- remove label	add_label = "<space>la",
+						add_comment = "<space>ca", -- add comment
+						delete_comment = "<space>cd", -- delete comment
+						next_comment = "]c", -- go to next comment
+						prev_comment = "[c", -- go to previous comment
+						react_hooray = "<space>rp", -- add/remove 🎉 reaction
+						react_heart = "<space>rh", -- add/remove ❤️ reaction
+						react_eyes = "<space>re", -- add/remove 👀 reaction
+						react_thumbs_up = "<space>r+", -- add/remove 👍 reaction
+						react_thumbs_down = "<space>r-", -- add/remove 👎 reaction
+						react_rocket = "<space>rr", -- add/remove 🚀 reaction
+						react_laugh = "<space>rl", -- add/remove 😄 reaction
+						react_confused = "<space>rc",
+					},
+				},
 			})
 		end,
 	},
