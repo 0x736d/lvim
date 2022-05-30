@@ -434,10 +434,17 @@ catppuccin.setup({
 	term_colors = false,
 	styles = {
 		comments = "italic",
+		conditionals = "italic",
+		loops = "NONE",
 		functions = "italic",
 		keywords = "NONE",
 		strings = "NONE",
 		variables = "NONE",
+		numbers = "bold",
+		booleans = "italic",
+		properties = "NONE",
+		types = "NONE",
+		operators = "NONE",
 	},
 	integrations = {
 		treesitter = true,
@@ -451,9 +458,9 @@ catppuccin.setup({
 			},
 			underlines = {
 				errors = "undercurl",
-				hints = "undercurl",
+				hints = "underdot",
 				warnings = "undercurl",
-				information = "underline",
+				information = "underdot",
 			},
 		},
 		lsp_trouble = true,
@@ -464,7 +471,7 @@ catppuccin.setup({
 		telescope = true,
 		nvimtree = {
 			enabled = true,
-			show_root = false,
+			show_root = true,
 			transparent_panel = true,
 		},
 		neotree = {
@@ -475,13 +482,13 @@ catppuccin.setup({
 		which_key = true,
 		indent_blankline = {
 			enabled = true,
-			colored_indent_levels = false,
+			colored_indent_levels = true,
 		},
 		dashboard = true,
 		neogit = false,
 		vim_sneak = false,
 		fern = false,
-		barbar = true,
+		barbar = false,
 		bufferline = true,
 		markdown = true,
 		lightspeed = false,
@@ -499,41 +506,43 @@ catppuccin.setup({
 local colors = require("catppuccin.api.colors").get_colors()
 
 catppuccin.remap({
-	-- general
-	TSKeywordFunction = { fg = colors.maroon, style = "bold,italic" },
-	TSFloat = { fg = colors.peach, style = "bold" }, -- For floats.
-	TSNumber = { fg = colors.peach, style = "bold" }, -- For all numbers
-	TSBoolean = { fg = colors.flamingo, style = "bold,italic" }, -- For booleans.
-	-- typescript
-	typescriptTSType = { fg = colors.yellow },
-	typescriptTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
-	typescriptTSParameter = { fg = colors.white, style = "italic" },
-	typescriptInterfaceName = { fg = colors.yellow },
-	typescriptTSNumber = { fg = colors.peach },
+	-- 	-- general
+	TSKeywordFunction = { fg = colors.mauve, style = "bold,italic" },
+	TSMethod = { fg = colors.blue, style = "NONE" },
+	TSFunction = { fg = colors.sapphire, style = "italic" },
+	-- 	-- typescript
+	-- 	typescriptTSType = { fg = colors.yellow },
+	-- 	typescriptTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
+	-- 	typescriptTSParameter = { fg = colors.white, style = "italic" },
+	-- 	typescriptInterfaceName = { fg = colors.yellow },
+	-- 	typescriptTSNumber = { fg = colors.peach },
 
-	-- go
-	goTSProperty = { fg = colors.lavender },
+	-- 	-- go
+	goTSProperty = { fg = colors.subtext1 },
+	goTSVariable = { fg = colors.text },
 	goTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
-	goTSMethod = { fg = colors.blue },
-	goTSParameter = { fg = colors.white, style = "italic" },
-	goTSNumber = { fg = colors.peach },
+	-- 	goTSMethod = { fg = colors.blue },
+	goTSParameter = { fg = colors.subtext0, style = "italic" },
+	-- 	goTSNumber = { fg = colors.peach },
 	goTSType = { fg = colors.teal },
-	goTSNamespace = { fg = colors.white, style = "bold" },
-	goTSKeyword = { fg = colors.red },
-	goTSKeywordFunction = { fg = colors.maroon, style = "italic,bold" },
-	-- jsx/tsx
-	tsxTSProperty = { fg = colors.lavender, style = "italic" },
-	tsxTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
-	tsxTSParameter = { fg = colors.white, style = "italic" },
-	tsxTSConstructor = { fg = colors.flamingo, style = "bold" },
-	tsxTSTagAttribute = { fg = colors.lavender },
-	tsxTSNumber = { fg = colors.peach },
+	goTSNamespace = { fg = colors.text, style = "bold" },
+	-- 	goTSKeyword = { fg = colors.red },
+	-- 	goTSKeywordFunction = { fg = colors.maroon, style = "italic,bold" },
+	-- 	-- jsx/tsx
+	tsxTSMethod = { fg = colors.blue, style = "italic" },
+	-- 	tsxTSProperty = { fg = colors.lavender, style = "italic" },
+	-- 	tsxTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
+	-- 	tsxTSParameter = { fg = colors.white, style = "italic" },
+	-- 	tsxTSConstructor = { fg = colors.flamingo, style = "bold" },
+	-- 	tsxTSTagAttribute = { fg = colors.lavender },
+	-- 	tsxTSNumber = { fg = colors.peach },
 
-	-- dockerfile
-	dockerfileKeyword = { fg = colors.maroon, style = "bold" },
+	-- 	-- dockerfile
+	dockerfileTSKeyword = { fg = colors.mauve, style = "bold" },
 })
 
 --***************************************************************************--
+vim.g.catppuccin_flavour = "mocha"
 lvim.colorscheme = "catppuccin"
 --***************************************************************************--
 
