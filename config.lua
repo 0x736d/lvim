@@ -561,6 +561,8 @@ catppuccin.remap({
 
 	-- 	-- dockerfile
 	dockerfileTSKeyword = { fg = colors.mauve, style = "bold" },
+	-- -- lua
+	luaTSField = { fg = colors.lavender },
 })
 
 --***************************************************************************--
@@ -597,7 +599,7 @@ lvim.builtin.lualine.sections = {
 	lualine_a = { "mode" },
 	lualine_b = {},
 	lualine_c = {
-		{ gps.get_location, cond = gps.is_avaliable, left_padding = 2, color = { fg = colors.teal } },
+		{ gps.get_location, cond = gps.is_avaliable, left_padding = 2, color = { fg = colors.overlay1 } },
 	},
 	lualine_x = {
 		{
