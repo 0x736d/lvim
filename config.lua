@@ -3,6 +3,17 @@
 --***************************************************************************--
 vim.opt.cmdheight = 1
 
+-- NOTE: experimenting
+--***************************************************************************--
+-- autocmds
+--***************************************************************************--
+vim.api.nvim_create_augroup("_change_cursor_shape", {})
+vim.api.nvim_create_autocmd("ExitPre", {
+	group = "_change_cursor_shape",
+	pattern = "*",
+	command = "set guicursor=a:hor20,a:blinkwait750-blinkoff400-blinkon250-Cursor/lCursor",
+})
+
 --***************************************************************************--
 -- lvim general
 --***************************************************************************--
