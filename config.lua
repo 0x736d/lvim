@@ -3,6 +3,17 @@
 --***************************************************************************--
 vim.opt.cmdheight = 1
 
+-- NOTE: experimenting
+--***************************************************************************--
+-- autocmds
+--***************************************************************************--
+vim.api.nvim_create_augroup("_change_cursor_shape", {})
+vim.api.nvim_create_autocmd("ExitPre", {
+	group = "_change_cursor_shape",
+	pattern = "*",
+	command = "set guicursor=a:hor20,a:blinkwait750-blinkoff400-blinkon250-Cursor/lCursor",
+})
+
 --***************************************************************************--
 -- lvim general
 --***************************************************************************--
@@ -28,7 +39,7 @@ lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 0
+lvim.builtin.nvimtree.active = true
 -- debugger adapter
 lvim.builtin.dap.active = true
 
@@ -170,6 +181,15 @@ lvim.builtin.which_key.mappings["m"] = {
 	r = { "<cmd>lua require('goto-preview').goto_preview_references()<cr>", "Go to preview references" },
 }
 
+lvim.builtin.which_key.mappings["i"] = {
+	name = "gh issue",
+	c = { "<cmd>Octo issue close<cr>", "Close issue" },
+	r = { "<cmd>Octo issue reopen<cr>", "Reopen issue" },
+	o = { "<cmd>Octo issue create<cr>", "Create issue" },
+	l = { "<cmd>Octo issue list<cr>", "List issues" },
+	u = { "<cmd>Octo issue url<cr>", "Copy URL of the issue" },
+}
+
 --***************************************************************************--
 -- skipped lsp servers for manual configuration
 --===========================================================================--
@@ -247,8 +267,8 @@ lvim.plugins = {
 		setup = function()
 			vim.g.indentLine_enabled = 1
 			vim.g.indent_blankline_char = "▏"
-			vim.g.indent_blankline_filetype_exclude = { "help", "terminal", "dashboard" }
-			vim.g.indent_blankline_buftype_exclude = { "terminal" }
+			vim.g.indent_blankline_filetype_exclude = { "lspinfo", "help", "terminal", "dashboard" }
+			vim.g.indent_blankline_buftype_exclude = { "terminal", "dashboard", "nofile", "quickfix" }
 			vim.g.indent_blankline_show_trailing_blankline_indent = false
 			vim.g.indent_blankline_show_first_indent_level = false
 		end,
@@ -394,8 +414,85 @@ lvim.plugins = {
 			})
 		end,
 	},
+	{
+		"pwntester/octo.nvim",
+		event = "BufRead",
+		config = function()
+			require("octo").setup({
+				default_remote = { "upstream", "origin" }, -- order to try remotes
+				reaction_viewer_hint_icon = "", -- marker for user reactions
+				user_icon = " ", -- user icon
+				timeline_marker = "", -- timeline marker
+				timeline_indent = "2", -- timeline indentation
+				right_bubble_delimiter = "", -- Bubble delimiter
+				left_bubble_delimiter = "", -- Bubble delimiter
+				github_hostname = "", -- GitHub Enterprise host
+				snippet_context_lines = 4, -- number or lines around commented lines
+				file_panel = {
+					size = 10, -- changed files panel rows
+					use_icons = true, -- use web-devicons in file panel
+				},
+				mappings = {
+					issue = {
+						reload = { lhs = "<C-r>", desc = "reload issue" },
+						open_in_browser = { lhs = "<C-b>", desc = "open issue in browser" },
+						copy_url = { lhs = "<C-y>", desc = "copy url to system clipboard" },
+						create_label = { lhs = "<space>lc", desc = "create label" },
+						add_label = { lhs = "<space>la", desc = "add label" },
+						remove_label = { lhs = "<space>ld", desc = "remove label" },
+						add_comment = { lhs = "<space>ca", desc = "add comment" },
+						delete_comment = { lhs = "<space>cd", desc = "delete comment" },
+						next_comment = { lhs = "]c", desc = "go to next comment" },
+						prev_comment = { lhs = "[c", desc = "go to previous comment" },
+						react_hooray = { lhs = "<space>rp", desc = "add/remove 🎉 reaction" },
+						react_heart = { lhs = "<space>rh", desc = "add/remove ❤️ reaction" },
+						react_eyes = { lhs = "<space>re", desc = "add/remove 👀 reaction" },
+						react_thumbs_up = { lhs = "<space>r+", desc = "add/remove 👍 reaction" },
+						react_thumbs_down = { lhs = "<space>r-", desc = "add/remove 👎 reaction" },
+						react_rocket = { lhs = "<space>rr", desc = "add/remove 🚀 reaction" },
+						react_laugh = { lhs = "<space>rl", desc = "add/remove 😄 reaction" },
+						react_confused = { lhs = "<space>rc", desc = "add/remove 😕 reaction" },
+					},
+					pull_request = {
+						checkout_pr = { lhs = "<space>po", desc = "checkout PR" },
+						merge_pr = { lhs = "<space>pm", desc = "merge commit PR" },
+						squash_and_merge_pr = { lhs = "<space>psm", desc = "squash and merge PR" },
+						list_commits = { lhs = "<space>pc", desc = "list PR commits" },
+						list_changed_files = { lhs = "<space>pf", desc = "list PR changed files" },
+						show_pr_diff = { lhs = "<space>pd", desc = "show PR diff" },
+						add_reviewer = { lhs = "<space>va", desc = "add reviewer" },
+						remove_reviewer = { lhs = "<space>vd", desc = "remove reviewer request" },
+						close_issue = { lhs = "<space>ic", desc = "close PR" },
+						reopen_issue = { lhs = "<space>io", desc = "reopen PR" },
+						list_issues = { lhs = "<space>il", desc = "list open issues on same repo" },
+						reload = { lhs = "<C-r>", desc = "reload PR" },
+						open_in_browser = { lhs = "<C-b>", desc = "open PR in browser" },
+						copy_url = { lhs = "<C-y>", desc = "copy url to system clipboard" },
+						goto_file = { lhs = "gf", desc = "go to file" },
+						add_assignee = { lhs = "<space>aa", desc = "add assignee" },
+						remove_assignee = { lhs = "<space>ad", desc = "remove assignee" },
+						create_label = { lhs = "<space>lc", desc = "create label" },
+						add_label = { lhs = "<space>la", desc = "add label" },
+						remove_label = { lhs = "<space>ld", desc = "remove label" },
+						goto_issue = { lhs = "<space>gi", desc = "navigate to a local repo issue" },
+						add_comment = { lhs = "<space>ca", desc = "add comment" },
+						delete_comment = { lhs = "<space>cd", desc = "delete comment" },
+						next_comment = { lhs = "]c", desc = "go to next comment" },
+						prev_comment = { lhs = "[c", desc = "go to previous comment" },
+						react_hooray = { lhs = "<space>rp", desc = "add/remove 🎉 reaction" },
+						react_heart = { lhs = "<space>rh", desc = "add/remove ❤️ reaction" },
+						react_eyes = { lhs = "<space>re", desc = "add/remove 👀 reaction" },
+						react_thumbs_up = { lhs = "<space>r+", desc = "add/remove 👍 reaction" },
+						react_thumbs_down = { lhs = "<space>r-", desc = "add/remove 👎 reaction" },
+						react_rocket = { lhs = "<space>rr", desc = "add/remove 🚀 reaction" },
+						react_laugh = { lhs = "<space>rl", desc = "add/remove 😄 reaction" },
+						react_confused = { lhs = "<space>rc", desc = "add/remove 😕 reaction" },
+					},
+				},
+			})
+		end,
+	},
 }
-
 --***************************************************************************--
 -- # COLORSCHEME CONFIG
 --***************************************************************************--
@@ -405,10 +502,17 @@ catppuccin.setup({
 	term_colors = false,
 	styles = {
 		comments = "italic",
+		conditionals = "italic",
+		loops = "NONE",
 		functions = "italic",
 		keywords = "NONE",
 		strings = "NONE",
 		variables = "NONE",
+		numbers = "bold",
+		booleans = "italic",
+		properties = "NONE",
+		types = "NONE",
+		operators = "NONE",
 	},
 	integrations = {
 		treesitter = true,
@@ -422,9 +526,9 @@ catppuccin.setup({
 			},
 			underlines = {
 				errors = "undercurl",
-				hints = "undercurl",
+				hints = "underdot",
 				warnings = "undercurl",
-				information = "underline",
+				information = "underdot",
 			},
 		},
 		lsp_trouble = true,
@@ -435,7 +539,7 @@ catppuccin.setup({
 		telescope = true,
 		nvimtree = {
 			enabled = true,
-			show_root = false,
+			show_root = true,
 			transparent_panel = true,
 		},
 		neotree = {
@@ -446,13 +550,13 @@ catppuccin.setup({
 		which_key = true,
 		indent_blankline = {
 			enabled = true,
-			colored_indent_levels = false,
+			colored_indent_levels = true,
 		},
 		dashboard = true,
 		neogit = false,
 		vim_sneak = false,
 		fern = false,
-		barbar = true,
+		barbar = false,
 		bufferline = true,
 		markdown = true,
 		lightspeed = false,
@@ -470,41 +574,45 @@ catppuccin.setup({
 local colors = require("catppuccin.api.colors").get_colors()
 
 catppuccin.remap({
-	-- general
-	TSKeywordFunction = { fg = colors.maroon, style = "bold,italic" },
-	TSFloat = { fg = colors.peach, style = "bold" }, -- For floats.
-	TSNumber = { fg = colors.peach, style = "bold" }, -- For all numbers
-	TSBoolean = { fg = colors.flamingo, style = "bold,italic" }, -- For booleans.
-	-- typescript
-	typescriptTSType = { fg = colors.yellow },
-	typescriptTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
-	typescriptTSParameter = { fg = colors.white, style = "italic" },
-	typescriptInterfaceName = { fg = colors.yellow },
-	typescriptTSNumber = { fg = colors.peach },
+	-- 	-- general
+	TSKeywordFunction = { fg = colors.mauve, style = "bold,italic" },
+	TSMethod = { fg = colors.blue, style = "NONE" },
+	TSFunction = { fg = colors.sapphire, style = "italic" },
+	-- 	-- typescript
+	-- 	typescriptTSType = { fg = colors.yellow },
+	-- 	typescriptTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
+	-- 	typescriptTSParameter = { fg = colors.white, style = "italic" },
+	-- 	typescriptInterfaceName = { fg = colors.yellow },
+	-- 	typescriptTSNumber = { fg = colors.peach },
 
-	-- go
-	goTSProperty = { fg = colors.lavender },
+	-- 	-- go
+	goTSProperty = { fg = colors.subtext1 },
+	goTSVariable = { fg = colors.text },
 	goTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
-	goTSMethod = { fg = colors.blue },
-	goTSParameter = { fg = colors.white, style = "italic" },
-	goTSNumber = { fg = colors.peach },
+	-- 	goTSMethod = { fg = colors.blue },
+	goTSParameter = { fg = colors.subtext0, style = "italic" },
+	-- 	goTSNumber = { fg = colors.peach },
 	goTSType = { fg = colors.teal },
-	goTSNamespace = { fg = colors.white, style = "bold" },
-	goTSKeyword = { fg = colors.red },
-	goTSKeywordFunction = { fg = colors.maroon, style = "italic,bold" },
-	-- jsx/tsx
-	tsxTSProperty = { fg = colors.lavender, style = "italic" },
-	tsxTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
-	tsxTSParameter = { fg = colors.white, style = "italic" },
-	tsxTSConstructor = { fg = colors.flamingo, style = "bold" },
-	tsxTSTagAttribute = { fg = colors.lavender },
-	tsxTSNumber = { fg = colors.peach },
+	goTSNamespace = { fg = colors.text, style = "bold" },
+	-- 	goTSKeyword = { fg = colors.red },
+	-- 	goTSKeywordFunction = { fg = colors.maroon, style = "italic,bold" },
+	-- 	-- jsx/tsx
+	tsxTSMethod = { fg = colors.blue, style = "italic" },
+	-- 	tsxTSProperty = { fg = colors.lavender, style = "italic" },
+	-- 	tsxTSTypeBuiltin = { fg = colors.yellow, style = "bold" },
+	-- 	tsxTSParameter = { fg = colors.white, style = "italic" },
+	-- 	tsxTSConstructor = { fg = colors.flamingo, style = "bold" },
+	-- 	tsxTSTagAttribute = { fg = colors.lavender },
+	-- 	tsxTSNumber = { fg = colors.peach },
 
-	-- dockerfile
-	dockerfileKeyword = { fg = colors.maroon, style = "bold" },
+	-- 	-- dockerfile
+	dockerfileTSKeyword = { fg = colors.mauve, style = "bold" },
+	-- -- lua
+	luaTSField = { fg = colors.lavender },
 })
 
 --***************************************************************************--
+vim.g.catppuccin_flavour = "mocha"
 lvim.colorscheme = "catppuccin"
 --***************************************************************************--
 
@@ -537,7 +645,7 @@ lvim.builtin.lualine.sections = {
 	lualine_a = { "mode" },
 	lualine_b = {},
 	lualine_c = {
-		{ gps.get_location, cond = gps.is_avaliable, left_padding = 2, color = { fg = colors.teal } },
+		{ gps.get_location, cond = gps.is_avaliable, left_padding = 2, color = { fg = colors.overlay1 } },
 	},
 	lualine_x = {
 		{
