@@ -2,7 +2,6 @@
 -- vim general
 --***************************************************************************--
 vim.opt.cmdheight = 0
-
 -- NOTE: experimenting
 --***************************************************************************--
 -- autocmds
@@ -30,6 +29,20 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- disable diagnostics outputs with virtual_text
 --***************************************************************************--
 lvim.lsp.diagnostics.virtual_text = false
+
+--***************************************************************************--
+-- attach nvim-navic to lsp server
+--***************************************************************************--
+lvim.lsp.on_attach_callback = function(client, bufnr)
+	if client.name ~= "null-ls" then
+		local ok, navic = pcall(require, "nvim-navic")
+		if not ok then
+			return
+		end
+
+		navic.attach(client, bufnr)
+	end
+end
 
 --***************************************************************************--
 -- builtin plugins
@@ -498,6 +511,15 @@ lvim.plugins = {
 	{
 		"feline-nvim/feline.nvim",
 	},
+	{
+		"SmiteshP/nvim-navic",
+		requires = "neovim/nvim-lspconfig",
+		config = function()
+			require("nvim-navic").setup({
+				highlight = true,
+			})
+		end,
+	},
 }
 --***************************************************************************--
 -- # COLORSCHEME CONFIG
@@ -615,6 +637,36 @@ catppuccin.remap({
 	dockerfileTSKeyword = { fg = colors.mauve, style = "bold" },
 	-- -- lua
 	luaTSField = { fg = colors.lavender },
+
+	-- -- nvim-navic
+	NavicIconsFile = { fg = colors.mauve },
+	NavicIconsModule = { fg = colors.mauve },
+	NavicIconsNamespace = { fg = colors.mauve },
+	NavicIconsPackage = { fg = colors.sapphire },
+	NavicIconsClass = { fg = colors.sapphire },
+	NavicIconsMethod = { fg = colors.blue },
+	NavicIconsProperty = { fg = colors.teal },
+	NavicFieldIcons = { fg = colors.teal },
+	NavicIconsConstructor = { fg = colors.sapphire },
+	NavicIconsEnum = { fg = colors.mauve },
+	NavicIconsInterface = { fg = colors.yellow },
+	NavicIconsFunction = { fg = colors.blue },
+	NavicIconsVariable = { fg = colors.text },
+	NavicIconsConstant = { fg = colors.peach },
+	NavicIconsString = { fg = colors.green },
+	NavicIconsNumber = { fg = colors.peach },
+	NavicIconsBoolean = { fg = colors.peach },
+	NavicIconsArray = { fg = colors.mauve },
+	NavicIconsObject = { fg = colors.mauve },
+	NavicIconsKey = { fg = colors.mauve },
+	NavicIconsNull = { fg = colors.subtext1 },
+	NavicIconsEnumNumber = { fg = colors.mauve },
+	NavicIconsStruct = { fg = colors.yellow },
+	NavicIconsEvent = { fg = colors.mauve },
+	NavicIconsOperator = { fg = colors.sky },
+	NavicIconsTypeParameter = { fg = colors.yellow },
+	NavicText = { fg = colors.subtext0 },
+	NavicSeparator = { fg = colors.subtext1 },
 })
 
 --***************************************************************************--
