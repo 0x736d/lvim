@@ -183,11 +183,14 @@ lvim.builtin.which_key.mappings["m"] = {
 
 lvim.builtin.which_key.mappings["i"] = {
 	name = "gh issue",
-	c = { "<cmd>Octo issue close<cr>", "Close issue" },
-	r = { "<cmd>Octo issue reopen<cr>", "Reopen issue" },
-	o = { "<cmd>Octo issue create<cr>", "Create issue" },
+	c = { "<cmd>Octo issue create<cr>", "Create issue" },
 	l = { "<cmd>Octo issue list<cr>", "List issues" },
-	u = { "<cmd>Octo issue url<cr>", "Copy URL of the issue" },
+}
+
+lvim.builtin.which_key.mappings["a"] = {
+	name = "gh pr",
+	o = { "<cmd>Octo pr create<cr>", "Create pr" },
+	l = { "<cmd>Octo pr list<cr>", "List pr" },
 }
 
 --***************************************************************************--
@@ -302,8 +305,8 @@ lvim.plugins = {
 		"f-person/git-blame.nvim",
 		event = "BufRead",
 		config = function()
-			vim.cmd("highlight default link gitblame SpecialComment")
-			vim.g.gitblame_enabled = 0
+			vim.g.gitblame_enabled = 1
+			vim.g.gitblame_display_virtual_text = 0
 		end,
 	},
 	{
@@ -526,7 +529,7 @@ catppuccin.setup({
 			},
 			underlines = {
 				errors = "undercurl",
-				hints = "underdot",
+				hints = "undercurl",
 				warnings = "undercurl",
 				information = "underdot",
 			},
