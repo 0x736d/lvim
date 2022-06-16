@@ -4,8 +4,12 @@ Lunarvim with a few extra plugins and some simple tweaks for some language serve
 
 ## Requirements
 
+> **Warning**
+>
+> This branch requires [neovim nightly](https://github.com/neovim/neovim/releases/tag/nightly)
+
 - **lunarvim** branch - _rolling_
-- **neovim** >= 0.7
+- **neovim** [nightly](https://github.com/neovim/neovim/releases/tag/nightly)
 
 ## How to use
 
