@@ -529,7 +529,7 @@ catppuccin.setup({
 			},
 			underlines = {
 				errors = "undercurl",
-				hints = "underdot",
+				hints = "undercurl",
 				warnings = "undercurl",
 				information = "underdot",
 			},
