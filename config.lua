@@ -495,6 +495,9 @@ lvim.plugins = {
 			})
 		end,
 	},
+	{
+		"feline-nvim/feline.nvim",
+	},
 }
 --***************************************************************************--
 -- # COLORSCHEME CONFIG
@@ -622,50 +625,52 @@ lvim.colorscheme = "catppuccin"
 --***************************************************************************--
 -- statusline configuration
 --***************************************************************************--
-local is_readonly = {
-	function()
-		if not vim.bo.readonly or not vim.bo.modifiable then
-			return ""
-		end
-		return " "
-	end,
-	color = { fg = colors.red },
-}
+lvim.builtin.lualine.active = false
+require("user.statusline").setup()
+-- local is_readonly = {
+-- 	function()
+-- 		if not vim.bo.readonly or not vim.bo.modifiable then
+-- 			return ""
+-- 		end
+-- 		return " "
+-- 	end,
+-- 	color = { fg = colors.red },
+-- }
 
-local components = require("lvim.core.lualine.components")
-local gps = require("nvim-gps")
+-- local components = require("lvim.core.lualine.components")
+-- local gps = require("nvim-gps")
 
-lvim.builtin.lualine.inactive_sections = {
-	lualine_a = {},
-	lualine_b = {},
-	lualine_c = {},
-	lualine_x = {},
-	lualine_y = {},
-	lualine_z = {},
-}
+-- lvim.builtin.lualine.inactive_sections = {
+-- 	lualine_a = {},
+-- 	lualine_b = {},
+-- 	lualine_c = {},
+-- 	lualine_x = {},
+-- 	lualine_y = {},
+-- 	lualine_z = {},
+-- }
 
-lvim.builtin.lualine.sections = {
-	lualine_a = { "mode" },
-	lualine_b = {},
-	lualine_c = {
-		{ gps.get_location, cond = gps.is_avaliable, left_padding = 2, color = { fg = colors.overlay1 } },
-	},
-	lualine_x = {
-		{
-			"branch",
-			icon = { "", color = { fg = colors.teal } },
-			padding = 0,
-		},
-		{ "diff", separator = "", padding = 1 },
-		{ "diagnostics", separator = "" },
-		{ "filetype", separator = "" },
-		{ "filename", color = { fg = colors.lavender, gui = "bold" }, separator = "" },
-		is_readonly,
-		components.encoding,
-	},
-	lualine_y = {},
-	lualine_z = { components.scrollbar },
-}
+-- lvim.builtin.lualine.sections = {
+-- 	lualine_a = { "mode" },
+-- 	lualine_b = {},
+-- 	lualine_c = {
+-- 		{ gps.get_location, cond = gps.is_avaliable, left_padding = 2, color = { fg = colors.overlay1 } },
+-- 	},
+-- 	lualine_x = {
+-- 		{
+-- 			"branch",
+-- 			icon = { "", color = { fg = colors.teal } },
+-- 			padding = 0,
+-- 		},
+-- 		{ "diff", separator = "", padding = 1 },
+-- 		{ "diagnostics", separator = "" },
+-- 		{ "filetype", separator = "" },
+-- 		{ "filename", color = { fg = colors.lavender, gui = "bold" }, separator = "" },
+-- 		is_readonly,
+-- 		components.encoding,
+-- 	},
+-- 	lualine_y = {},
+-- 	lualine_z = { components.scrollbar },
+-- }
 --***************************************************************************--
 -- ##
 --***************************************************************************--
