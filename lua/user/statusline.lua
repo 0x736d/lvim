@@ -21,6 +21,9 @@ local inactive = {
 	},
 	buftypes = {
 		"terminal",
+		"dashboard",
+		"nofile",
+		"quickfix",
 	},
 }
 
@@ -512,10 +515,50 @@ M.setup = function()
 		},
 	}
 
+	opts.winbar_components.active[1][1] = {
+		provider = { name = "file_info", opts = { type = "unique" } },
+		hl = {
+			fg = colors.overlay1,
+			bg = colors.base,
+		},
+		left_sep = {
+			str = " ",
+			hl = {
+				fg = colors.subtext1,
+				bg = colors.base,
+			},
+		},
+		right_sep = {
+			str = " > ",
+			hl = {
+				fg = colors.subtext1,
+				bg = colors.base,
+			},
+		},
+		enabled = is_enabled(shortline, winid, 70),
+	}
+
+	local ok, navic = pcall(require, "nvim-navic")
+	opts.winbar_components.active[1][2] = {
+		provider = function()
+			if not ok then
+				return ""
+			end
+			return navic.get_location()
+		end,
+		hl = {
+			bg = colors.base,
+			fg = colors.subtext0,
+		},
+		enabled = navic.is_available,
+	}
+
 	feline.setup({
 		components = opts.components,
-		winbar_components = opts.winbar_components,
+		force_inactive = opts.components.force_inactive,
 	})
+
+	feline.winbar.setup({ components = opts.winbar_components, force_inactive = opts.winbar_components.force_inactive })
 end
 
 return M
