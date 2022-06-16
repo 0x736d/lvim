@@ -383,7 +383,7 @@ M.setup = function()
 			fg = colors.subtext1,
 			bg = color_preset.default_bg,
 		},
-		enabled = any_git_changes(),
+		enabled = any_git_changes,
 		icon = {
 			str = " +",
 			hl = {
@@ -398,7 +398,7 @@ M.setup = function()
 			fg = colors.subtext1,
 			bg = color_preset.default_bg,
 		},
-		enabled = any_git_changes(),
+		enabled = any_git_changes,
 		icon = {
 			str = " ~",
 			hl = {
@@ -413,7 +413,7 @@ M.setup = function()
 			fg = colors.subtext1,
 			bg = color_preset.default_bg,
 		},
-		enabled = any_git_changes(),
+		enabled = any_git_changes,
 		icon = {
 			str = " -",
 			hl = {
