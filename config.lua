@@ -526,7 +526,7 @@ lvim.plugins = {
 --***************************************************************************--
 local catppuccin = require("catppuccin")
 catppuccin.setup({
-	transparent_background = true,
+	transparent_background = false,
 	term_colors = false,
 	styles = {
 		comments = "italic",
@@ -548,8 +548,8 @@ catppuccin.setup({
 			enabled = true,
 			virtual_text = {
 				errors = "italic",
-				hints = "italic",
-				warnings = "italic",
+				hints = "NONE",
+				warnings = "bold",
 				information = "italic",
 			},
 			underlines = {
@@ -568,7 +568,7 @@ catppuccin.setup({
 		nvimtree = {
 			enabled = true,
 			show_root = true,
-			transparent_panel = true,
+			transparent_panel = false,
 		},
 		neotree = {
 			enabled = false,
