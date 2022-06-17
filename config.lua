@@ -639,19 +639,19 @@ catppuccin.remap({
 	luaTSField = { fg = colors.lavender },
 
 	-- -- nvim-navic
-	NavicIconsFile = { fg = colors.mauve },
+	NavicIconsFile = { fg = colors.maroon },
 	NavicIconsModule = { fg = colors.mauve },
 	NavicIconsNamespace = { fg = colors.mauve },
-	NavicIconsPackage = { fg = colors.sapphire },
+	NavicIconsPackage = { fg = colors.sky },
 	NavicIconsClass = { fg = colors.sapphire },
 	NavicIconsMethod = { fg = colors.blue },
-	NavicIconsProperty = { fg = colors.teal },
+	NavicIconsProperty = { fg = colors.yellow },
 	NavicFieldIcons = { fg = colors.teal },
-	NavicIconsConstructor = { fg = colors.sapphire },
+	NavicIconsConstructor = { fg = colors.mauve },
 	NavicIconsEnum = { fg = colors.mauve },
 	NavicIconsInterface = { fg = colors.yellow },
 	NavicIconsFunction = { fg = colors.blue },
-	NavicIconsVariable = { fg = colors.text },
+	NavicIconsVariable = { fg = colors.rosewater },
 	NavicIconsConstant = { fg = colors.peach },
 	NavicIconsString = { fg = colors.green },
 	NavicIconsNumber = { fg = colors.peach },
@@ -679,6 +679,10 @@ lvim.colorscheme = "catppuccin"
 --***************************************************************************--
 lvim.builtin.lualine.active = false
 require("user.statusline").setup()
+--***************************************************************************--
+-- winbar configuration
+--***************************************************************************--
+require("user.winbar").setup()
 --***************************************************************************--
 -- ##
 --***************************************************************************--
