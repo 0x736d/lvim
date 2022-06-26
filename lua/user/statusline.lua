@@ -331,6 +331,9 @@ local providers = {
 					bg = colors.mantle,
 				},
 			},
+
+			right_sep = invisible_sep(),
+			left_sep = invisible_sep(),
 		},
 		{
 			provider = "git_diff_added",
