@@ -645,7 +645,7 @@ catppuccin.remap({
 	NavicIconsPackage = { fg = colors.sky },
 	NavicIconsClass = { fg = colors.sapphire },
 	NavicIconsMethod = { fg = colors.blue },
-	NavicIconsProperty = { fg = colors.yellow },
+	NavicIconsProperty = { fg = colors.teal },
 	NavicFieldIcons = { fg = colors.teal },
 	NavicIconsConstructor = { fg = colors.mauve },
 	NavicIconsEnum = { fg = colors.mauve },
